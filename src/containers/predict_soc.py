@@ -1,8 +1,11 @@
+from distutils.command.upload import upload
 import streamlit as st
 from src.spectrometry import WAVELENGTH_IDENTIFIERS, plot_spectrometry
 import pandas as pd
 import plotly.express as px
 from src.models.soc import spectrometry_based_soc_model
+from src.models.spec_sim import get_k_closest
+from src.database.database import visnir_lib
 
 
 def predict_soc_container():
@@ -50,13 +53,48 @@ def explore_individual_samples_container(
         "Select a sample", uploaded_df[uploaded_df.columns.values[0]].to_list()
     )
 
-    st.plotly_chart(
-        plot_spectrometry(
-            uploaded_df[uploaded_df[id_col_name] == selected_sample_id],
+    selected_data: pd.DataFrame = uploaded_df[
+        uploaded_df[id_col_name] == selected_sample_id
+    ]
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+
+        st.plotly_chart(
+            plot_spectrometry(
+                selected_data,
+                id_col_name,
+                WAVELENGTH_IDENTIFIERS[wavelength_identifier],
+            )
+        )
+
+        k_closest = get_k_closest(
+            selected_data,
+            visnir_lib,
             id_col_name,
             WAVELENGTH_IDENTIFIERS[wavelength_identifier],
         )
-    )
+
+    with col2:
+        st.plotly_chart(
+            plot_spectrometry(
+                k_closest, id_col_name, WAVELENGTH_IDENTIFIERS[wavelength_identifier]
+            )
+        )
+
+    with col3:
+        st.plotly_chart(
+            px.scatter_mapbox(
+                k_closest,
+                lat="LAT",
+                lon="LON",
+                color="SOC",
+                size_max=10,
+                zoom=2,
+                title="Nearest neighbour locations",
+            )
+        )
 
 
 def plot_user_data_on_loc(
