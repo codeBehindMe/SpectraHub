@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     env:
-      IMAGE_TAG: australia-southeast2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/soil/soil_lib:latest
+      IMAGE_TAG: australia-southeast2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/soil/spectra_hub:latest
     steps:
       - name: Login to GAR
         uses: docker/login-action@v1
