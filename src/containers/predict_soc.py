@@ -109,7 +109,10 @@ def explore_individual_samples_container(
     with col2:
         st.plotly_chart(
             plot_spectrometry(
-                k_closest, id_col_name, WAVELENGTH_IDENTIFIERS[wavelength_identifier]
+                k_closest,
+                id_col_name,
+                WAVELENGTH_IDENTIFIERS[wavelength_identifier],
+                plot_title="Closest neighbour spectrometries from our library",
             )
         )
 

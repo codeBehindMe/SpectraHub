@@ -9,19 +9,17 @@ def soc_map_container(df: pd.DataFrame):
         col1, col2 = st.columns(2)
         with col1:
             fig = px.scatter_mapbox(
-                    df,
-                    lat="LAT",
-                    lon="LON",
-                    color="SOC",
-                    color_continuous_scale=px.colors.cyclical.IceFire,
-                    size_max=10,
-                    zoom=2,
-                    title="National Soil Carbon Data Map",
-                )
-            fig.update_layout(coloraxis_showscale=False)
-            st.plotly_chart(
-              fig
+                df,
+                lat="LAT",
+                lon="LON",
+                color="SOC",
+                color_continuous_scale=px.colors.cyclical.IceFire,
+                size_max=10,
+                zoom=2,
+                title="National Soil Carbon Data Map",
             )
+            fig.update_layout(coloraxis_showscale=False)
+            st.plotly_chart(fig)
 
         with col2:
             st.markdown(
