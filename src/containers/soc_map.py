@@ -8,8 +8,7 @@ def soc_map_container(df: pd.DataFrame):
     with st.container():
         col1, col2 = st.columns(2)
         with col1:
-            st.plotly_chart(
-                px.scatter_mapbox(
+            fig = px.scatter_mapbox(
                     df,
                     lat="LAT",
                     lon="LON",
@@ -19,6 +18,9 @@ def soc_map_container(df: pd.DataFrame):
                     zoom=2,
                     title="National Soil Carbon Data Map",
                 )
+            fig.update_layout(coloraxis_showscale=False)
+            st.plotly_chart(
+              fig
             )
 
         with col2:
